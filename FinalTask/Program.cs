@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
-using System.Xml.Linq;
 
 namespace FinalTask
 {
@@ -9,18 +10,22 @@ namespace FinalTask
     {
         static void Main(string[] args)
         {
-            XNamespace xNamesapce = "urn:oasis:names:tc:xliff:document:1.2";
-            Console.WriteLine("Path: ");
-            string path = @"c:\Users\lurbanski\Desktop\Szkola\TMS Archive replacer inputs\FixedBilingualFiles\";
+            FileInfo fileInfo = new FileInfo(ConfigurationManager.AppSettings["inputPathForSingleFixedFile"] + ConfigurationManager.AppSettings["inputFile"]);
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            XliffFileDetails xliffFileDetails = new XliffFileDetails(fileInfo.FullName);
 
-            FileInfo[] files = directoryInfo.GetFiles("*.sdlxliff", SearchOption.AllDirectories);
-
-            XDocument document = XDocument.Load("docx.xml");
-
-            string value = document.Root.Element(xNamesapce + "file").Attribute("source-language").Value;
-            Console.WriteLine(value);
+            // Just for test, but could you check if this is something I can begin to work with?
+            List<XliffFileDetails> listOfFixedXliffs = new List<XliffFileDetails>();
+            DirectoryInfo directoryInfo = new DirectoryInfo(ConfigurationManager.AppSettings["inputPathForAllFixedFiles"]);
+            foreach (FileInfo fi in directoryInfo.GetFiles("*.sdlxliff", SearchOption.AllDirectories))
+            {
+                listOfFixedXliffs.Add(new XliffFileDetails(fi.FullName));
+            }
+            foreach(XliffFileDetails xliff in listOfFixedXliffs)
+            {
+                Console.WriteLine(xliff.SourceLanguage);
+                Console.WriteLine(xliff.OriginalFileName);
+            }
             Console.ReadKey();
         }
     }
