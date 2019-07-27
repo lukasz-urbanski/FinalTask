@@ -7,26 +7,21 @@ namespace FinalTaskTest
     [TestClass]
     public class UnitTest1
     {
-        XliffFileDetails testxlif = new XliffFileDetails(@"C:\Users\Łukasz\Desktop\SDL\C#\FilesForFinalTask\TMS Archive replacer inputs\FixedBilingualFiles\ESE\NL\98223_to_translate_docx.sdlxliff");
+        XliffFileDetails testxlif = new XliffFileDetails(new System.IO.FileInfo(@"C:\Users\Łukasz\Desktop\SDL\C#\FilesForFinalTask\TMS Archive replacer inputs\FixedBilingualFiles\ESE\NL\98223_to_translate_docx.sdlxliff"));
+
+        ZipPackageDetails testzip = new ZipPackageDetails(new System.IO.FileInfo(@"C:\Users\Łukasz\Desktop\SDL\C#\FilesForFinalTask\TMS Archive replacer inputs\ArchiveSample - Kopia\ORG 1\jobs\4739_Two newsletters into Dutch.zip"));
         [TestMethod]
-        public void ShouldReturnSourceLanguage()
+        public void ShouldReturnCorrectXliffDetils()
         {
             Assert.AreEqual("en-GB", testxlif.SourceLanguage);
-        }
-        [TestMethod]
-        public void ShouldReturnTargetLanguage()
-        {
             Assert.AreEqual("nl-NL", testxlif.TargetLanguage);
-        }        
-        [TestMethod]
-        public void ShouldReturnOriginalFileName()
-        {
             Assert.AreEqual("to_translate.docx", testxlif.OriginalFileName);
+            Assert.AreEqual("4739", testxlif.JobId);
         }
         [TestMethod]
-        public void JobId()
+        public void ShouldReturnCorrectZipDetail()
         {
-            Assert.AreEqual("4739", testxlif.JobId);
+            Assert.IsNotNull(testzip.LanguagePairs);
         }
     }
 }
